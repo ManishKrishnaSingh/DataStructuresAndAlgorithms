@@ -1,4 +1,4 @@
-#include <iostream>
+#include <bits/stdc++.h>
 
 using namespace std;
 
@@ -12,35 +12,35 @@ typedef struct node{
     }
 }Node;
 
-int height(Node *root){
-    if(root==NULL) {
+int findDistanceUtil(Node* root, int n1, int n2, int& distance){
+    if (root == nullptr){
         return 0;
     }
-    int leftHeight  = height(root->left);
-    int rightHeight = height(root->right);
-    return 1 + max(leftHeight,rightHeight);
-}
 
-int width(Node *root, int level){
-    if(root!=nullptr){
-        if(level==1) {
+    int left  = findDistanceUtil(root->left,  n1, n2, distance);
+    int right = findDistanceUtil(root->right, n1, n2, distance);
+
+    if (root->data == n1 || root->data == n2){
+        if (left || right){
+            distance = max(left, right);
+            return 0;
+        } else {
             return 1;
-        } else if(level>1) {
-            int leftWidth  = width(root->left,level-1);
-            int rightWidth = width(root->right,level-1);
-            return leftWidth + rightWidth;
         }
-    }
-    return 0;
+    } else if (left && right){
+        distance = left + right;
+        return 0;
+	} else if (left || right){
+	    return 1 + max(left, right);
+	}
+
+	return 0;
 }
 
-int maxWidth(Node *root) {
-    int maxWidth=0;
-    int h=height(root);
-    for(int i=1; i<=h; i++) {
-        maxWidth=max(maxWidth, width(root,i));
-    }
-    return maxWidth;
+int findDistance(Node* root, int n1, int n2){
+    int distance = 0;
+    findDistanceUtil(root, n1, n2, distance);
+    return distance;
 }
 
 int main(){
@@ -52,8 +52,8 @@ int main(){
     root->right->left = new Node(5);
     root->right->right = new Node(9);
 
-    cout<<"Max Width = "<<maxWidth(root);
+    cout<<"Distance[4,5] = "<<findDistance(root,4,5)<<endl;
+    cout<<"Distance[2,9] = "<<findDistance(root,2,9)<<endl;
 
     return 0;
 }
-
