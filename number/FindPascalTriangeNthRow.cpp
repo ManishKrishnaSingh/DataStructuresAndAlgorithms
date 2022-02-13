@@ -2,6 +2,7 @@
 
 using namespace std;
 
+// nCr = n!/r!(n-r)!
 void nthRowPascalTriange(int n){
     n--;
     int curr;
