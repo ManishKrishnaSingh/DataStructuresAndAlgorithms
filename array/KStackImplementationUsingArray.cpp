@@ -4,84 +4,97 @@ using namespace std;
 
 class kStacks {
   private:
+    int K, N;
+
     int *arr;
     int *next;
+
     int *top;
-    int n, k;
+
     int free;
 
   public:
-    kStacks(int k1, int n1){
-        k = k1, n = n1;
-        arr = new int[n];
-        top = new int[k];
-        next = new int[n];
+    kStacks(int nOfStack, int capacity){
+        K = nOfStack;
+        N = capacity;
 
-        for (int i = 0; i < k; i++){
+        // init top array
+        top = new int[K];
+        for(int i=0; i<K; i++){
             top[i] = -1;
         }
 
-        //init free spaces
-        free = 0;
-        for(int i=0; i<n-1; i++){
+        // init next array
+        arr  = new int[N];
+        next = new int[N];
+        for(int i=0; i<N-1; i++){
             next[i] = i+1;
         }
-        next[n-1] = -1;
+        next[N-1] = -1;
+
+        free = 0; // free index
+    }
+
+    void push(int stkIdentifier, int key){
+        if (isFull()){
+            cout<<"\nStack Overflow\n";
+            return;
+        }
+
+        int index = free;
+        arr[index] = key;
+        free = next[index];
+
+        next[index] = top[stkIdentifier];
+        top[stkIdentifier] = index;
+    }
+
+    int pop(int stkIdentifier){
+        if (isEmpty(stkIdentifier)){
+            cout<<"\nStack Underflow\n";
+            return INT_MAX;
+        }
+
+        int index = top[stkIdentifier];
+        top[stkIdentifier] = next[index];
+
+        next[index]=free;
+        free=index;
+
+        return arr[index];
     }
 
     bool isFull() {
         return (free == -1);
     }
 
-    void push(int item, int sn){
-        if (isFull()){
-            cout<<"\nStack Overflow\n"; return;
-        }
-
-        int idx = free;
-        arr[idx] = item;
-
-        free = next[idx];
-
-        next[idx] = top[sn]; top[sn] = idx;
-    }
-
-    int pop(int sn){
-        if (isEmpty(sn)){
-            cout << "\nStack Underflow\n"; return INT_MAX;
-        }
-
-        int idx = top[sn];
-        top[sn] = next[idx];
-
-        next[idx]=free; free=idx;
-
-        return arr[idx];
-    }
-
-    bool isEmpty(int sn) {
-        return (top[sn] == -1);
+    bool isEmpty(int stkIdentifier) {
+        return (top[stkIdentifier] == -1);
     }
 };
 
 int main(){
-    int k=3, n=10;
-    kStacks ks(k, n);
+    int K=3, N=12;
+    kStacks stk(K,N);
 
-    ks.push(15, 2);
-    ks.push(45, 2);
+    stk.push(0, 41);
+    stk.push(0, 95);
+    stk.push(0, 77);
+    stk.push(0, 64);
 
-    ks.push(17, 1);
-    ks.push(49, 1);
-    ks.push(39, 1);
+    stk.push(1, 17);
+    stk.push(1, 50);
+    stk.push(1, 34);
+    stk.push(1, 35);
 
-    ks.push(11, 0);
-    ks.push(9, 0);
-    ks.push(7, 0);
+    stk.push(2, 15);
+    stk.push(2, 55);
+    stk.push(2, 45);
+    stk.push(2, 23);
 
-    cout<<"Popped [Stack 2] is "<<ks.pop(2)<<endl;
-    cout<<"Popped [Stack 1] is "<<ks.pop(1)<<endl;
-    cout<<"Popped [Stack 0] is "<<ks.pop(0)<<endl;
+    cout<<"POP[0]="<<stk.pop(0)<<endl;
+    cout<<"POP[1]="<<stk.pop(1)<<endl;
+    cout<<"POP[2]="<<stk.pop(2)<<endl;
 
     return 0;
 }
