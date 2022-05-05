@@ -56,13 +56,13 @@ bool matchesBottomUp(string txt, string pat){
 
     for(int i=1; i<=m; i++){
         for(int j=1; j<=n; j++){
-            if(pat[j-1]=='.' || pat[j-1]==txt[i-1]){
-                dp[i][j] = dp[i-1][j-1];
-            } else if(pat[j-1]=='*'){
+            if(pat[j-1]=='*'){
                 dp[i][j] = dp[i][j-2];
                 if(pat[j-2]=='.' || pat[j-2]==txt[i-1]){
                     dp[i][j] = dp[i][j] || dp[i-1][j];
                 }
+            } else if(pat[j-1]=='.' || pat[j-1]==txt[i-1]){
+                dp[i][j] = dp[i-1][j-1];
             } else {
                 dp[i][j] = false;
             }
