@@ -48,9 +48,9 @@ bool matchesBottomUp(string txt, string pat){
     }
 
     dp[0][0] = true;
-    for(int i=1; i<=n; i++){
-        if(pat[i-1] == '*'){
-            dp[0][i] = dp[0][i-2];
+    for(int j=1; j<=n; j++){
+        if(pat[j-1] == '*'){
+            dp[0][j] = dp[0][j-2];
         }
     }
 
