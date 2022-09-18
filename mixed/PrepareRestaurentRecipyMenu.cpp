@@ -50,7 +50,7 @@ bool IsPossibleToBuildRecipy(list<string> &iIngredients, unordered_map<string, b
         if((mRecipyToIngredients.find(ingredient) != mRecipyToIngredients.end())){
             if(!mRecipy[ingredient]){
                 intermediateIngredients.push_back(ingredient);
-				mRecipy[ingredient] = IsPossibleToBuildRecipy(mRecipyToIngredients[ingredient], mRecipy);
+		mRecipy[ingredient] = IsPossibleToBuildRecipy(mRecipyToIngredients[ingredient], mRecipy);
             }
         }
     }
