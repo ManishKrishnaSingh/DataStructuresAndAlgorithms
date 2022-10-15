@@ -1,9 +1,16 @@
-#include <iostream>
+#include <bits/stdc++.h>
 
 using namespace std;
 
+/*************************************************************************
+In an array prices where price[i] is price of a given stock on the ith day.
+On each day, you may decide to buy and/or sell the stock. You can only hold
+at most 1 share of stock at any time & you can buy it then immediately sell
+it on the same day. Return the maximum profit you can achieve.
+**************************************************************************/
+
 int maxProfitStockBuySell(int price[], int n){
-    int profit=0;
+    int maxProfit = 0;
     if(n >= 2){
         int idx=0;
         while(idx < n-1) {
@@ -21,10 +28,11 @@ int maxProfitStockBuySell(int price[], int n){
             }
             int idxSell = idx-1;
 
-            profit += (price[idxSell]-price[idxBuy]);
+            maxProfit += (price[idxSell] - price[idxBuy]);
         }
     }
-    return profit;
+
+    return maxProfit;
 }
 
 int main(){
@@ -32,8 +40,7 @@ int main(){
     int n = sizeof(price) / sizeof(price[0]);
 
     int maxProfit = maxProfitStockBuySell(price, n);
-    cout<<"Max Profit [Stock Buy & Sell] = "<<maxProfit;
+    cout<<"Max Profit[Stock Buy & Sell]="<<maxProfit;
 
     return 0;
 }
-
