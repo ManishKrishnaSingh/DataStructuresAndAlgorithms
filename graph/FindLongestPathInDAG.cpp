@@ -32,15 +32,14 @@ class Graph{
         adj[u].emplace_back(v, w);
     }
 
-    void topologicalSort(int v, bool visited[], stack<int>& stk){
-        visited[v] = true;
-        for(auto iter=adj[v].begin(); iter!=adj[v].end(); iter++){
-            Edge edge = *iter;
-            if(!visited[edge.v]){
-                topologicalSort(edge.v, visited, stk);
+    void TopologicalSort(int u, bool visited[], stack<int>& stk){
+        visited[u] = true;
+        for(auto iter=adj[u].begin(); iter!=adj[u].end(); iter++){
+            if(!visited[iter->v]){
+                TopologicalSort(iter->v, visited, stk);
             }
         }
-        stk.push(v);
+        stk.push(u);
     }
 
     void LongestPathLength(int start){
@@ -53,7 +52,7 @@ class Graph{
         }
 
         stack<int> stk;
-        topologicalSort(start, visited, stk);
+        TopologicalSort(start, visited, stk);
 
         distance[start] = 0;
         while(!stk.empty()){
