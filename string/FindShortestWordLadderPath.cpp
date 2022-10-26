@@ -1,69 +1,88 @@
-#include <queue>
-#include <vector>
-#include <iostream>
-#include <unordered_set>
+#include <bits/stdc++.h>
 
 using namespace std;
 
-unordered_set<string> dictionary {
-    "poon", "plee", "same", "poie", "plie", "poin", "plea"
-};
+bool IsDifferByOne(string xStr, string yStr){
+    int counter = 0;
+    int size = min(xStr.size(),yStr.size());
 
-vector<string> findNextWords(string word){
-    vector<string> nextWords;
-    for(int i=0; i<word.size(); i++) {
-        char s = word[i];
-        for(char c='a'; c<='z'; c++) {
-            word[i] = c;
-            if (dictionary.count(word)){
-                nextWords.push_back(word);
-            }
+    for(int i=0; i < size; i++){
+        if(xStr[i] != yStr[i]){
+            counter++;
         }
-        word[i] = s;
     }
-    return nextWords;
+
+    if(counter == 1){
+        return true;
+    }
+
+    return false;
 }
 
-void findWordLadders(string start, string final){
-    bool IsLadderComplete = false;
-    vector<vector<string>> listLadder;
+void PrintLadder(vector<string>& ladder){
+    cout<<"\nWord Ladder:";
+    for(auto word : ladder){
+        cout<<" -> "<<word;
+    }
+}
 
-    queue<vector<string>> qShortestPath;
-    qShortestPath.push({ start });
-
-    while (!qShortestPath.empty()) {
-        int size = qShortestPath.size();
-        for(int i=0; i<size; i++) {
-            vector<string> curr = qShortestPath.front();
-            qShortestPath.pop();
-
-            vector<string> nextWords = findNextWords(curr.back());
-            for(int j=0; j<nextWords.size(); j++) {
-                vector<string> newLadder(curr.begin(), curr.end());
-                newLadder.push_back(nextWords[j]);
-                if (nextWords[j] == final) {
-                    IsLadderComplete = true;
-                    listLadder.push_back(newLadder);
-                }
-                qShortestPath.push(newLadder);
-            }
-        }
-        if (IsLadderComplete) break;
+void findShortestWordLadderPath(vector<string>& dictionary,string start,string final){
+    if(start == final){
+        return;
     }
 
-    // Print Word Ladders
-    for(int i=0; i<listLadder.size(); i++) {
-        cout<<"["<<i+1<<"] :";
-        for(int j=0; j<listLadder[i].size(); j++) {
-            cout<<" -> "<<listLadder[i][j];
+    // add start and final
+    dictionary.push_back(start);
+    dictionary.push_back(final);
+
+    map<string,vector<string>> map;
+
+    int n = dictionary.size();
+    for(int i=0; i < n; i++){
+        for(int j=i+1; j < n; j++){
+            if(IsDifferByOne(dictionary[i], dictionary[j])){
+                map[dictionary[i]].push_back(dictionary[j]);
+                map[dictionary[j]].push_back(dictionary[i]);
+            }
         }
-        cout<<endl;
+    }
+
+    unordered_set<string> visit;
+    queue<pair<string,vector<string>>> que;
+
+    visit.insert(start);
+    que.push({start,{start}});
+
+    while(!que.empty()){
+        auto front = que.front(); que.pop();
+
+        string word = front.first;
+        auto ladder = front.second;
+
+        if(word == final){
+            PrintLadder(ladder); break;
+        }
+
+        for(auto str : map[word]){
+            if(visit.find(str) == visit.end()){
+                visit.insert(str);
+                // copy the curr ladder
+                vector<string> temp(ladder);
+                // add new word to ladder
+                temp.push_back(str);
+                // add new ladder to queue
+                que.push({str, temp});
+            }
+        }
     }
 }
 
 int main(){
-    string start="toon",final="plea";
-    findWordLadders(start, final);
+    vector<string> dictionary = {
+        "poon", "plee", "same", "poie", "plie", "poin", "plea"
+    };
+
+    findShortestWordLadderPath(dictionary, "toon", "plea");
+
     return 0;
 }
-
