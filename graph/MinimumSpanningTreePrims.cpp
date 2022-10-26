@@ -1,8 +1,4 @@
-#include <list>
-#include <queue>
-#include <vector>
-#include <climits>
-#include <iostream>
+#include <bits/stdc++.h>
 
 using namespace std;
 
@@ -27,34 +23,28 @@ class Graph{
         adj[v].push_back(make_pair(u,w));
     }
 
-    void minimumSpanningTree(){
-        priority_queue<Node,vector<Node>,greater<Node>> pQueue;
+    void minSpanningTree(){
+        priority_queue<Node,vector<Node>,greater<Node>> pq;
 
-        vector<int> key(V, INT_MAX);
         vector<int> parent(V, -1);
-        vector<bool> inmst(V, false);
+        vector<int> weight(V, INT_MAX);
+
+        vector<bool> visit(V, false);
 
         int start = 0;
-        pQueue.push({0, start});
+        pq.push({0, start});
+        while(!pq.empty()){
+            int u=pq.top().second; pq.pop();
 
-        while(!pQueue.empty()){
-            int u=pQueue.top().second;
-            pQueue.pop();
+            visit[u] = true;
 
-            if(inmst[u] == true){
-                continue;
-            } else {
-                inmst[u] = true;
-            }
-
-            for (auto iter=adj[u].begin(); iter!=adj[u].end(); iter++){
+            for(auto iter=adj[u].begin(); iter!=adj[u].end(); iter++){
                 int v = iter->first;
                 int w = iter->second;
-
-                if (inmst[v]==false && key[v]>w){
-                    key[v] = w;
+                if (!visit[v] and weight[v] > w){
                     parent[v] = u;
-                    pQueue.push(make_pair(key[v], v));
+                    weight[v] = w;
+                    pq.push({weight[v], v});
                 }
             }
         }
@@ -83,8 +73,7 @@ int main(){
     graph.addEdge(6, 8, 6);
     graph.addEdge(7, 8, 7);
 
-    graph.minimumSpanningTree();
+    graph.minSpanningTree();
 
     return 0;
 }
-
