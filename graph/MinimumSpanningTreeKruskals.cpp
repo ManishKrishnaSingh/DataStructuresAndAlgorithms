@@ -1,15 +1,13 @@
-#include <vector>
-#include <climits>
-#include <iostream>
-#include <algorithm>
+#include <bits/stdc++.h>
 
 using namespace std;
 
-class DishointSetUnion {
+class DisjointSetUnion {
     int* rank;
     int* parent;
+
   public:
-    DishointSetUnion(int n){
+    DisjointSetUnion(int n){
         rank = new int[n];
         parent = new int[n];
         for(int i=0; i<n; i++){
@@ -82,19 +80,21 @@ class Graph{
     int findMinimumCost(){
         sort(edges.begin(), edges.end(), compare);
 
-        int cost = 0;
-        DishointSetUnion dsu(V);
+        int minCost = 0;
+        DisjointSetUnion dsu(V);
+
         for(Edge edge :  edges){
             int u = edge.start;
             int v = edge.finish;
             int w = edge.weight;
             if(dsu.find(u) != dsu.find(v)){
                 dsu.Union(u, v);
-                cost = cost + w;
+                minCost = minCost + w;
                 cout<<"Edge : "<<u<<" - "<<v<<endl;
             }
         }
-        return cost;
+
+        return minCost;
     }
 };
 
@@ -113,4 +113,3 @@ int main(){
 
     return 0;
 }
-
