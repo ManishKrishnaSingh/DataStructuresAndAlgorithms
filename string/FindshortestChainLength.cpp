@@ -1,77 +1,77 @@
-#include <map>
-#include <set>
-#include <queue>
-#include <iostream>
+#include <bits/stdc++.h>
 
 using namespace std;
 
-int shortestChainLen(string start, string final, set<string>& D){
+bool IsDifferByOne(string xStr, string yStr){
+    int counter = 0;
+    int size = min(xStr.size(),yStr.size());
+
+    for(int i=0; i < size; i++){
+        if(xStr[i] != yStr[i]){
+            counter++;
+        }
+    }
+
+    if(counter == 1){
+        return true;
+    }
+
+    return false;
+}
+
+int shortestChainLength(vector<string>& dictionary,string start,string final){
     if(start == final){
         return 0;
     }
 
-    map<string, vector<string>> umap;
-    for(int i = 0; i < start.size(); i++){
-        string str = start.substr(0,i) + "*" + start.substr(i+1);
-        umap[str].push_back(start);
-    }
+    // add start and final
+    dictionary.push_back(start);
+    dictionary.push_back(final);
 
-    for(auto it = D.begin(); it != D.end(); it++){
-        string word = *it;
-        for(int j = 0; j < word.size(); j++){
-            string str = word.substr(0,j) + "*" + word.substr(j+1);
-            umap[str].push_back(word);
-        }
-    }
+    map<string,vector<string>> map;
 
-    queue<pair<string, int>> q;
-    map<string, int> visited;
-
-    q.push(make_pair(start,1));
-    visited[start] = 1;
-
-    while(!q.empty()){
-        pair<string, int> p = q.front();
-        q.pop();
-
-        string word = p.first;
-        int dist = p.second;
-
-        if(word == final){
-            return dist;
-        }
-
-        for(int i = 0; i < word.size(); i++){
-            string str = word.substr(0,i) + "*" + word.substr(i+1);
-
-            vector<string> vect = umap[str];
-            for(int j = 0; j < vect.size(); j++){
-                if(visited[vect[j]] == 0){
-                    visited[vect[j]] = 1;
-                    q.push(make_pair(vect[j], dist + 1));
-                }
+    int n = dictionary.size();
+    for(int i=0; i < n; i++){
+        for(int j=i+1; j < n; j++){
+            if(IsDifferByOne(dictionary[i], dictionary[j])){
+                map[dictionary[i]].push_back(dictionary[j]);
+                map[dictionary[j]].push_back(dictionary[i]);
             }
         }
     }
+
+    queue<pair<string,int>> que;
+    unordered_set<string> visit;
+
+    que.push({start,1});
+    visit.insert(start);
+
+    while(!que.empty()){
+        auto front = que.front(); que.pop();
+
+        string word  = front.first;
+        int distance = front.second;
+        if(word == final){
+            return distance;
+        }
+
+        for(auto str : map[word]){
+            if(visit.find(str) == visit.end()){
+                visit.insert(str);
+                que.push({str, distance+1});
+            }
+        }
+    }
+
     return 0;
 }
 
 int main(){
-    set<string> D;
+    vector<string> dictionary = {
+        "poon", "plee", "same", "poie", "plie", "poin", "plea"
+    };
 
-    D.insert("poon");
-    D.insert("plee");
-    D.insert("same");
-    D.insert("poie");
-    D.insert("plie");
-    D.insert("poin");
-    D.insert("plea");
-
-    string start = "toon";
-    string final = "plea";
-
-    cout<<"Length [WL] = "<<shortestChainLen(start, final, D);
+    cout<<"Length [WL] = "<<shortestChainLength(dictionary, "toon", "plea");
 
     return 0;
 }
-
