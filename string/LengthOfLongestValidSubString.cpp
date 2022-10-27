@@ -5,13 +5,12 @@
 using namespace std;
 
 int findMaxLength(string str){
-    int n = str.length();
-    int maxLen = INT_MIN;
+    int maxLen = 0;
 
     stack<int> stk;
-    stk.push(-1);
 
-    for(int i=0; i<n; i++){
+    stk.push(-1);
+    for(int i=0; i < str.length(); i++){
         if(str[i] == '('){
             stk.push(i);
         } else {
@@ -38,4 +37,3 @@ int main(){
 
     return 0;
 }
-
