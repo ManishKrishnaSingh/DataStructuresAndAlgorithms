@@ -4,21 +4,24 @@ using namespace std;
 
 #define N 4
 
+int getCost(int x, int y){
+	return sqrt(abs(N-1-x)*abs(N-1-x)+abs(N-1-y)*abs(N-1-y));
+}
+
 typedef struct node {
 	int x, y;
 	int cost;
 	int level;
-	int mat[N][N];
 	node * parent;
 }Node;
 
-Node* createNode(int mat[N][N], int x, int y, int level, Node* parent){
+Node* createNode(int x, int y, int level, Node* parent){
 	Node * node = new Node();
 	node->x = x;
 	node->y = y;
+	node->cost = getCost(x, y);
 	node->level = level;
 	node->parent = parent;
-	memcpy(node->mat, mat, sizeof(node->mat));
 	return node;
 }
 
@@ -29,20 +32,15 @@ class compare{
 	}
 };
 
-int getCost(int x, int y, int nx, int ny){
-	return sqrt(abs(nx-x)*abs(nx-x)+abs(ny-y)*abs(ny-y));
-}
-
-void printPath(Node* node){
+void PrintPath(Node* node){
 	stack<pair<int, int>> stk;
 	while(node != nullptr){
 		stk.push({node->x, node->y});
 		node = node->parent;
 	}
 	while(!stk.empty()){
-		pair<int,int> p = stk.top();
-		stk.pop();
-		cout<<p.first<<" - "<<p.second<<endl;
+		auto top = stk.top(); stk.pop();
+		cout<<top.first<<" - "<<top.second<<endl;
 	}
 }
 
@@ -52,28 +50,22 @@ bool isSafe(int maze[N][N], int x, int y){
 
 void solveMaze(int maze[N][N], int x, int y){
 	priority_queue<Node*, vector<Node*>, compare> pq;
-	Node* node = createNode(maze, x, y, 0, nullptr);
-	node->cost = getCost(x,y, x,y);
 
-	pq.push(node);
+	pq.push(createNode(x, y, 0, nullptr));
 
 	while(!pq.empty()){
-		Node * top = pq.top();
-		pq.pop();
+		Node* top = pq.top(); pq.pop();
 
 		if(top->x==N-1 && top->y==N-1 && maze[top->x][top->y]==1){
-			printPath(top);
-			return;
+			PrintPath(top); return;
 		}
 
 		if(isSafe(maze, top->x+1, top->y)){
-			Node* child = createNode(maze, top->x+1, top->y, top->level+1, top);
-			pq.push(child);
+			pq.push(createNode(top->x+1, top->y, top->level+1, top));
 		}
 
 		if(isSafe(maze, top->x, top->y+1)){
-			Node* child = createNode(maze, top->x, top->y+1, top->level+1, top);
-			pq.push(child);
+			pq.push(createNode(top->x, top->y+1, top->level+1, top));
 		}
 	}
 }
@@ -90,4 +82,3 @@ int main(){
 
     return 0;
 }
-
