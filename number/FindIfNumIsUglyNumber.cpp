@@ -3,7 +3,7 @@
 using namespace std;
 
 int uglyUtil(int a, int b){
-    if(a%b == 0){
+    while(a%b == 0){
         a = a/b;
     }
     return a;
