@@ -13,13 +13,13 @@ int power(int x, int y){
     int result=1;
     while(y != 0){
         if(y%2 == 1){
-            y--;
             result = result*x;
-        } else {
-            y = y >> 1;
-            result = result*x*x;
         }
+
+        x = x * x;
+        y = y >> 1;
     }
+
     return result;
 }
 
