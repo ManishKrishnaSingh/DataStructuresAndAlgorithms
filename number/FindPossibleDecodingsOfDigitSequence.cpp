@@ -2,6 +2,11 @@
 
 using namespace std;
 
+/**********************************************
+ I/P: digits[] = "121"
+ O/P: 3 [Possible Decodings: "ABA", "AU", "LA"]
+ **********************************************/
+
 int findPossibleWaysOfDecoding(string& digits){
     int n=digits.size();
 
