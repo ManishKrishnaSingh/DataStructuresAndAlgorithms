@@ -9,45 +9,48 @@ class Iterator
 
   public:
     Iterator(const vector<int>& nums);
+
     Iterator(const Iterator& iter);
 
     int next();
+
     bool hasNext() const;
 };
 
 class PeekingIterator : public Iterator
 {
-    int next_val;
-    bool iter_hasnext;
-    public:
+    int nextValue;
+    bool pHasNext;
+
+  public:
     PeekingIterator(const vector<int>& nums) : Iterator(nums)
     {
-        iter_hasnext=Iterator::hasNext();
-        if (iter_hasnext)
+        pHasNext = Iterator::hasNext();
+        if (pHasNext)
         {
-            next_val = Iterator::next();
+            nextValue = Iterator::next();
         }
     }
 
     int peek()
     {
-        return next_val;
+        return nextValue;
     }
 
     int next()
     {
-        int curr_next = next_val;
-        iter_hasnext=Iterator::hasNext();
-        if (iter_hasnext)
+        int currNext = nextValue;
+        pHasNext = Iterator::hasNext();
+        if (pHasNext)
         {
-            next_val = Iterator::next();
+            nextValue = Iterator::next();
         }
-        return curr_next;
+        return currNext;
     }
 
     bool hasNext() const
     {
-        return iter_hasnext;
+        return pHasNext;
     }
 };
 
