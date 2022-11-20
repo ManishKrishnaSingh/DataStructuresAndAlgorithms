@@ -2,62 +2,65 @@
 
 using namespace std;
 
-int kModulo = 1000000007; //modulo 10^9 + 7.
+// modulo=10^9+7 : Prime Number
+unsigned long kMod = 1000000007;
 
-unsigned long multiInverse(unsigned long x, int y)
+/*****************************************************
+ * If we use a prime number as our modulus kMod, then
+ * Inverse Modulo of mul is pow(mul, kMod - 2) % kMod
+*****************************************************/
+
+long modpow(long x, int y)
 {
-    unsigned long tot = 1, p = x;
-    for (; y; y >>= 1) 
+    long result=1;
+    while (y != 0)
     {
-        if (y & 1){
-            tot = (tot * p) % kModulo;
+        if(y & 1){
+            result = (result*x) % kMod;
         }
-        p = (p * p) % kModulo;
+
+        x = (x*x) % kMod;
+        y = y >> 1;//shift
     }
-    return tot;
+    return result;
 }
 
 class Fancy
 {
-    int index;
-    long multiply;
-    long increment;
-    long sequence[100001];
+    long inc, mul;
+    vector<long> seq;
 
   public:
     Fancy()
     {
-        this->index = 0;
-        this->multiply = 1;
-        this->increment = 0;
+        this->mul = 1;
+        this->inc = 0;
     }
 
     void append(int value)
     {
-        sequence[index++] = (((kModulo+value-increment)%kModulo) * multiInverse(multiply,kModulo-2))%kModulo;
+        seq.push_back((((kMod+value-inc)%kMod) * modpow(mul,kMod-2))%kMod);
     }
 
     void addAll(int num)
     {
-        increment = (increment+ num%kModulo) % kModulo;
+        inc = (inc+ num%kMod) % kMod;
     }
 
     void multAll(int num)
     {
-        multiply  = (multiply  * num%kModulo) % kModulo;
-        increment = (increment * num%kModulo) % kModulo;
+        mul = (mul * num%kMod) % kMod;
+        inc = (inc * num%kMod) % kMod;
     }
 
     int getIndex(int idx)
     {
-        if (idx >= index)
+        long result = -1;
+        if (idx < seq.size())
         {
-            return -1;
+            result = ((seq[idx] * mul) % kMod + inc) % kMod;
         }
-        else
-        {
-            return ((sequence[idx]*multiply) % kModulo + increment) % kModulo;
-        }
+        return result;
     }
 };
 
