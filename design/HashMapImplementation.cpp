@@ -90,18 +90,18 @@ int main()
 {
     cout<<"Hash Map :-";
 
-    MyHashMap mKayValue;
+    MyHashMap mKeyValue;
 
-    mKayValue.put(1, 1);
-    mKayValue.put(2, 2);
-    cout<<"\nmap[1] = "<<mKayValue.get(1);
-    cout<<"\nmap[3] = "<<mKayValue.get(3);
+    mKeyValue.put(1, 1);
+    mKeyValue.put(2, 2);
+    cout<<"\nmap[1] = "<<mKeyValue.get(1);
+    cout<<"\nmap[3] = "<<mKeyValue.get(3);
 
-    mKayValue.put(2, 1);
-    cout<<"\nmap[2] = "<<mKayValue.get(2);
+    mKeyValue.put(2, 1);
+    cout<<"\nmap[2] = "<<mKeyValue.get(2);
 
-    mKayValue.remove(2);
-    cout<<"\nmap[2] = "<<mKayValue.get(2);
+    mKeyValue.remove(2);
+    cout<<"\nmap[2] = "<<mKeyValue.get(2);
 
     return 0;
 }
