@@ -1,34 +1,35 @@
-#include <queue>
-#include <climits>
-#include <iostream>
-#include <unordered_set>
+#include <bits/stdc++.h>
 
 using namespace std;
 
-int dpSuperUgly(int primes[], int size, int N){
-    int dp[N+1];
-    for(int i=0; i<=N; i++){
-        dp[i] = 1;
-    }
+int dpSuperUgly(int primes[], int size, int n)
+{
+    int dp[n+1];
 
-    int pointer[size];
-    for(int i=0; i<size; i++){
-        pointer[i] = 1;
-    }
+    int index[size] = {0}; // stores prime indexes
+    int multi[size] = {0}; // store the multipliers
 
-    for (int i = 2; i <= N; i++){
-        int index, minNumber = INT_MAX;
-        for (int j = 0; j < size; j++){
-            int num = dp[pointer[j]] * primes[j];
-            if(num < minNumber){
-                index = j;
-                minNumber = num;
+    dp[0] = 1;
+    for(int i=0; i<n; i++)
+    {
+        int  minimum = INT_MAX;
+        for(int j=0; j<size; j++)
+        {
+            multi[j] = dp[index[j]]*primes[j];
+            minimum = min(minimum, multi[j]);
+        }
+
+        for(int j=0; j<size; j++)
+        {
+            if(minimum==multi[j])
+            {
+                index[j]++;
+                dp[i+1] = multi[j];
             }
         }
-        pointer[index]++;
-        dp[i] = minNumber;
     }
-    return dp[N];
+
+    return dp[n-1];
 }
 
 int pqSuperUgly(int primes[], int size, int N){
