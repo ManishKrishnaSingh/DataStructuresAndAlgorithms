@@ -45,7 +45,7 @@ bool IsSafe(bool visited[M][N], int i, int j){
     return (!visited[i][j] && i<M && i>=0 && j<N && j>=0);
 }
 
-void findWords(char boggle[M][N], bool visited[M][N], int i, int j, Node* node, string str)
+void dfs(char boggle[M][N], bool visited[M][N], int i, int j, Node* node, string str)
 {
     if(node->isLeaf){
         std::cout << str << std::endl;
@@ -62,7 +62,7 @@ void findWords(char boggle[M][N], bool visited[M][N], int i, int j, Node* node, 
                 y = j + d.second;
                 if(IsSafe(visited,x,y) && boggle[x][y]==ch)
                 {
-                    findWords(boggle, visited, x, y, node->children[k], str + ch);
+                    dfs(boggle, visited, x, y, node->children[k], str + ch);
                 }
             }
         }
@@ -75,12 +75,13 @@ void solveBoggle(char boggle[M][N], Node* root){
     bool visited[M][N];
     memset(visited, false, sizeof(visited));
 
-    Node* pCrawl = root;
+    Node* curr = root;
     for(int i=0; i<M; i++){
         for(int j=0; j<N; j++){
             int index = boggle[i][j]-'A';
-            if(pCrawl->children[index]){
-                findWords(boggle, visited, i, j, pCrawl->children[index], string(1,boggle[i][j]));
+            if(curr->children[index])
+            {
+                dfs(boggle, visited, i, j, curr->children[index], string(1,boggle[i][j]));
             }
         }
     }
