@@ -15,10 +15,12 @@ class LruCache {
 
     int get(int key){
         if (mKeyToItr.count(key)){
+            // brings the key to the front in the queue
+            keyQueue.splice(keyQueue.begin(), keyQueue, mKeyToItr[key]);
             // erase existing key
-            keyQueue.erase(mKeyToItr[key]);
+            //keyQueue.erase(mKeyToItr[key]);
             // push to front in queue
-            keyQueue.push_front(key);
+            //keyQueue.push_front(key);
             // update iterator map
             mKeyToItr[key] = keyQueue.begin();
             // return value 4 key
