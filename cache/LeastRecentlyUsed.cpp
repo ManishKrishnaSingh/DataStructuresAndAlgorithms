@@ -1,67 +1,64 @@
-#include <list>
-#include <iostream>
-#include <unordered_map>
+#include <bits/stdc++.h>
 
 using namespace std;
 
 class LruCache {
-  private:
     int capacity;
-    list<int> qCache;
-    unordered_map<int, list<int>::iterator> mIdToIter;
+    list<int> keyQueue;
+    unordered_map<int,int> mKeyToVal;
+    unordered_map<int, list<int>::iterator> mKeyToItr;
 
   public:
     LruCache(int iCapacity){
         capacity = iCapacity;
     }
 
-    void refer(int id){
-        // not present in cache
-        if (mIdToIter.find(id) == mIdToIter.end())
-        {
-            // cache is full
-            if (qCache.size() == capacity) {
-                // delete least recently used element
-                int last = qCache.back();
-
-                // Pops the last element
-                qCache.pop_back();
-
-                // Erase the last
-                mIdToIter.erase(last);
-            }
-        } else {
-            // present in cache
-            qCache.erase(mIdToIter[id]);
+    int get(int key){
+        if (mKeyToItr.count(key)){
+            // erase existing key
+            keyQueue.erase(mKeyToItr[key]);
+            // push to front in queue
+            keyQueue.push_front(key);
+            // update iterator map
+            mKeyToItr[key] = keyQueue.begin();
+            // return value 4 key
+            return mKeyToVal[key];
         }
-
-        // update reference
-        qCache.push_front(id);
-        mIdToIter[id] = qCache.begin();
+        return -1;
     }
 
-    void display(){
-        for (auto it = qCache.begin(); it != qCache.end(); it++){
-            cout << (*it) << " ";
+    void put(int key, int value){
+        if (mKeyToItr.count(key)){
+            keyQueue.erase(mKeyToItr[key]);
+        } else if (keyQueue.size() == capacity){
+            // delete the last used key
+            int lastKey = keyQueue.back();
+            keyQueue.pop_back();
+            // erase the last key
+            mKeyToItr.erase(lastKey);
+            mKeyToVal.erase(lastKey);
         }
-        cout << endl;
+        // update the reference
+        keyQueue.push_front(key);
+        mKeyToVal[key] = value;
+        mKeyToItr[key] = keyQueue.begin();
     }
 };
 
 int main(){
-    LruCache lruCache(4);
+    LruCache lruCache(2);
 
-    // refer cache
-    lruCache.refer(1);
-    lruCache.refer(2);
-    lruCache.refer(3);
-    lruCache.refer(1);
-    lruCache.refer(4);
-    lruCache.refer(5);
+    lruCache.put(1, 10);
+    lruCache.put(2, 20);
+    cout<<"\n=> "<<lruCache.get(1); // 10
 
-    // display cache
-    lruCache.display();
+    lruCache.put(3, 30);
+    cout<<"\n=> "<<lruCache.get(2); // -1
+
+    lruCache.put(4, 40);
+    cout<<"\n=> "<<lruCache.get(1); // -1
+    cout<<"\n=> "<<lruCache.get(3); // 30
+    cout<<"\n=> "<<lruCache.get(4); // 40
 
     return 0;
 }
-
