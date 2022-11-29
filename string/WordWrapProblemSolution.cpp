@@ -1,48 +1,44 @@
-#include <cmath>
-#include <climits>
-#include <iostream>
+#include <bits/stdc++.h>
 
 using namespace std;
 
 #define LL 6
 
 void solveWordWrap(int arr[], int n){
-    int cost[n];
-    int ansr[n];
+    int linecost[n];
+    int solution[n];
 
-    // last line
-    ansr[n-1] = 0;
-    ansr[n-1] = n-1;
+    // update last line
+    solution[n-1] = n-1;
 
-    int currCost;
-    int currlength;
-    for (int i=n-2; i>=0; i--) {
-        cost[i] = INT_MAX;
+    int currCost, currlength;
+    for (int j=n-2; j>=0; j--)
+    {
         currlength = -1;
-        for (int j=i; j<n; j++) {
-            currlength += (arr[j]+1);
-            if (currlength > LL){
+        linecost[j] = INT_MAX;
+        for (int i=j; i<n; i++)
+        {
+            currlength += (arr[i]+1);
+            if (currlength > LL)
                 break;
-            }
 
-            if (j == n-1){
+            if (i == n-1)
                 currCost = 0;
-            } else {
-                currCost = pow((LL-currlength),2) + cost[j+1];
-            }
+            else
+                currCost = pow((LL-currlength),3) + linecost[i+1];
 
-            if (currCost < cost[i]) {
-                cost[i] = currCost;
-                ansr[i] = j;
+            if (currCost < linecost[j])
+            {
+                linecost[j] = currCost;
+                solution[j] = i;
             }
         }
     }
 
-    int idx=0;
-    int line=1;
-    while (idx < n) {
-        cout<<"Line "<<line++<<" : "<<idx<<"-"<<ansr[idx]<<endl;
-        idx = ansr[idx] + 1;
+    int idx = 0;
+    while (idx < n){
+        cout<<idx<<"-"<<solution[idx]<<endl;
+        idx = solution[idx] + 1;
     }
 }
 
@@ -54,4 +50,3 @@ int main(){
 
     return 0;
 }
-
