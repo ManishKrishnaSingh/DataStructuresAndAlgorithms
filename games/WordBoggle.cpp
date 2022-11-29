@@ -53,13 +53,12 @@ void dfs(char boggle[M][N], bool visited[M][N], int i, int j, Node* node, string
 
     visited[i][j] = true;
 
-    int x, y;
     for(int k=0; k<26; k++){
         if(node->children[k]!=nullptr){
             char ch = (char)('A' + k);
             for(auto d : directions){
-                x = i + d.first;
-                y = j + d.second;
+                int x = i + d.first;
+                int y = j + d.second;
                 if(IsSafe(visited,x,y) && boggle[x][y]==ch)
                 {
                     dfs(boggle, visited, x, y, node->children[k], str + ch);
