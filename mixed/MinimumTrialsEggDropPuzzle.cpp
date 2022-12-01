@@ -18,10 +18,10 @@ int minEggDrop(int n, int k){
 int dpEggDrop(int n, int k){
     int dp[n+1][k+1];
 
-    // no of eggs 0 or 1
+    // 0 or 1 floors
     for(int i=1;i<=n; i++){
         dp[i][0] = 0;
-        dp[i][1] = 0;
+        dp[i][1] = 1;
     }
 
     // 1 egg and j floors
