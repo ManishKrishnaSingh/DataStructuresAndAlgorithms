@@ -12,25 +12,25 @@ void solveWordWrap(int arr[], int n){
     solution[n-1] = n-1;
 
     int currCost, currlength;
-    for (int j=n-2; j>=0; j--)
+    for (int i=n-2; i>=0; i--)
     {
         currlength = -1;
-        linecost[j] = INT_MAX;
-        for (int i=j; i<n; i++)
+        linecost[i] = INT_MAX;
+        for (int j=i; j<n; j++)
         {
-            currlength += (arr[i]+1);
+            currlength += (arr[j]+1);
             if (currlength > LL)
                 break;
 
-            if (i == n-1)
+            if (j == n-1)
                 currCost = 0;
             else
-                currCost = pow((LL-currlength),3) + linecost[i+1];
+                currCost = pow((LL-currlength),3) + linecost[j+1];
 
-            if (currCost < linecost[j])
+            if (currCost < linecost[i])
             {
-                linecost[j] = currCost;
-                solution[j] = i;
+                linecost[i] = currCost;
+                solution[i] = j;
             }
         }
     }
