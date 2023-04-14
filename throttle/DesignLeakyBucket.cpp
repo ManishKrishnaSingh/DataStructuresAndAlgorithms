@@ -13,7 +13,7 @@ class LeakyBucket
     queue<Packet> qBucket;
     int leakRate, currSize, maxSize;
 
-    public:
+  public:
     LeakyBucket(int iRate, int iSize): leakRate(iRate), currSize(0), maxSize(iSize){}
 
     void addPacket(Packet iPacket)
