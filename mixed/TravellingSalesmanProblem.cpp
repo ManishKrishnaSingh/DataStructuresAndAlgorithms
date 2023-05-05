@@ -8,13 +8,13 @@ using namespace std;
 
 int VISITEDALL = (1<<N) - 1; //1111
 
-int tspUtil(int graph[N][N], int dp[][N], int mask, int curr, int start){
+int tspUtil(int graph[N][N], int dp[][N], int mask, int curr, int final){
   if(mask == VISITEDALL){
-    return graph[curr][start];
+    return graph[curr][final];
   }
 
-  if(dp[mask][start] != -1){
-     return dp[mask][start];
+  if(dp[mask][curr] != -1){
+     return dp[mask][curr];
   }
 
 
@@ -22,7 +22,7 @@ int tspUtil(int graph[N][N], int dp[][N], int mask, int curr, int start){
 
   for(int i=0; i<N; i++){
     if((mask & (1<<i)) == 0){
-      int newWeight = graph[curr][i] + tspUtil(graph, dp, mask|(1<<i), i, start);
+      int newWeight = graph[curr][i] + tspUtil(graph, dp, mask|(1<<i), i, final);
 
       minWeight = min(minWeight, newWeight);
     }

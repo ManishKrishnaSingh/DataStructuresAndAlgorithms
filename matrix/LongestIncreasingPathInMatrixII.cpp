@@ -15,18 +15,22 @@ int dfs(int mat[M][N], int dp[M][N], int i, int j)
     if(dp[i][j] == -1)
     {
         int left=0, right=0, up=0, down=0;
+
         if(IsSafe(i-1, j) and mat[i-1][j] > mat[i][j])
         {
             left = dfs(mat, dp, i-1, j);
         }
+
         if(IsSafe(i+1, j) and mat[i+1][j] > mat[i][j])
         {
             right = dfs(mat, dp, i+1, j);
         }
+
         if(IsSafe(i, j-1) and mat[i][j-1] > mat[i][j])
         {
             up = dfs(mat, dp, i, j-1);
         }
+
         if(IsSafe(i, j+1) and mat[i][j+1] > mat[i][j])
         {
             down = dfs(mat, dp, i, j+1);
@@ -58,7 +62,8 @@ int findLongestIncreasingPath(int mat[M][N])
 
 int main()
 {
-    int mat[M][N] = {
+    int mat[M][N] =
+	{
         { 1, 2, 3, 4 },
         { 2, 2, 3, 4 },
         { 3, 2, 3, 4 },

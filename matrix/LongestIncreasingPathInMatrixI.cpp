@@ -6,24 +6,30 @@ const int N = 4;
 using namespace std;
 
 int LipUtil(int dp[N+1][N+1], int mat[N][N], int x, int y){
-    if (dp[x][y] < 0) {
+    if (dp[x][y] < 0)
+	{
 
-        if (x == N-1 && y == N-1){
+        if (x == N-1 && y == N-1)
+		{
             return dp[x][y] = 1;
         }
 
         int result = 0;
-        if (x == N-1 || y == N-1){
+        if (x == N-1 || y == N-1)
+		{
             result = 1;
         }
         
-        if (mat[x][y] < mat[x + 1][y]){
+        if ((x+1) < N and mat[x][y] < mat[x + 1][y])
+		{
             result = max(result, 1 + LipUtil(dp, mat, x + 1, y));
         }
         
-        if (mat[x][y] < mat[x][y + 1]){
+        if ((y+1) < N and mat[x][y] < mat[x][y + 1])
+		{
             result = max(result, 1 + LipUtil(dp, mat, x, y + 1));
         }
+
         dp[x][y] = result;
     }
     return dp[x][y];
