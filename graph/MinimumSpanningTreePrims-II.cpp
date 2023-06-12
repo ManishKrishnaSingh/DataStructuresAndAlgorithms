@@ -18,40 +18,40 @@ int getLeastKey(vector<int>& keySet, vector<bool>& mstSet)
     return minIndex;
 }
 
-
 void PrintPrimsMST(int parent[], int graph[V][V])
 {
     cout<<"Edge\tWeight"<<endl;
     for (int i = 1; i < V; i++)
-	{
-	    cout<<parent[i]<<" - "<<i<<"\t"<<graph[i][parent[i]]<<endl;
-	}
+    {
+	cout<<parent[i]<<" - "<<i<<"\t"<<graph[i][parent[i]]<<endl;
+    }
 }
 
 void PrintPrimsMST(int graph[V][V])
 {
     int parent[V];
-    vector<int> keySet(V,INT_MAX);
+
+    vector<int>  keySet(V, INT_MAX);
     vector<bool> mstSet(V, false);
 
-	keySet[0] = 0;
-	parent[0] = -1;
+    keySet[0] = 0;
+    parent[0] = -1;
     for(int count=0; count < V-1; count++)
-	{
-		int u = getLeastKey(keySet, mstSet);
+    {
+	int u = getLeastKey(keySet, mstSet);
 
-		mstSet[u] = true;
-		for (int v=0; v < V; v++)
+	mstSet[u] = true;
+	for (int v=0; v < V; v++)
+	{
+		if (graph[u][v] && mstSet[v] == false && graph[u][v] < keySet[v])
 		{
-			if (graph[u][v] && mstSet[v] == false && graph[u][v] < keySet[v])
-			{
-				parent[v] = u;
-				keySet[v] = graph[u][v];
-			}
+			parent[v] = u;
+			keySet[v] = graph[u][v];
 		}
+	}
     }
 
-	PrintPrimsMST(parent, graph);
+    PrintPrimsMST(parent, graph);
 }
 
 int main()
