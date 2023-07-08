@@ -7,6 +7,7 @@ int getBiTreeSum(int* biTree, int idx){
     idx = idx + 1;
     while(idx > 0){
         sum += biTree[idx];
+        // flip last set bit
         idx -= idx & (-idx);
     }
     return sum;
@@ -20,6 +21,7 @@ void updateBiTree(int* biTree, int idx, int n, int freq){
     idx = idx + 1;
     while(idx <= n){
         biTree[idx] += freq;
+        // add last set bit
         idx += idx & (-idx);
     }
 }
