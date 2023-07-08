@@ -36,6 +36,11 @@ class Graph{
         while(!pq.empty()){
             int u=pq.top().second; pq.pop();
 
+            if(visit[u])
+            {
+                continue;
+            }
+
             visit[u] = true;
 
             for(auto iter=adj[u].begin(); iter!=adj[u].end(); iter++){
