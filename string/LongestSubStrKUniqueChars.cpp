@@ -9,19 +9,26 @@ int maxLengthKUniqueChars(string str, int K){
     int count = 0;
     int start = 0;
     int hash[256] = {0};
-    for(int i=0; i<n; i++){
-        if(hash[str[i]] == 0){
+    for(int i=0; i<n; i++)
+    {
+        if(hash[str[i]] == 0)
+        {
             count++;
         }
+
         hash[str[i]]++;
 
-        if(count == K){
+        if(count == K)
+        {
             maxLength = max(maxLength, i-start+1);
 
-            if((i+1)<n && hash[str[i+1]] == 0){
-                while(count == K){
+            if((i+1)<n && hash[str[i+1]] == 0)
+            {
+                while(count == K)
+                {
                     hash[str[start]]--;
-                    if(hash[str[start]]==0){
+                    if(hash[str[start]]==0)
+                    {
                         count--;
                     }
                     start++;
