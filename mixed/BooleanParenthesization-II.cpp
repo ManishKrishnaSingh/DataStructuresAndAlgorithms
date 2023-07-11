@@ -23,7 +23,7 @@ int countWays(string str, int i, int j, int isTrue){
 
     int counter = 0;
     for(int k=i+1; k<=j-1; k=k+2){
-        int leftT,leftF,rightT,rightF;
+        int leftT, leftF, rightT, rightF;
 
         if(dp[i][k-1][1] == -1){
             leftT = countWays(str,i,k-1,1);
@@ -68,10 +68,8 @@ int countWays(string str, int i, int j, int isTrue){
                 counter += (leftF*rightF);
             }
         }
-
-        dp[i][j][isTrue] = counter%1003;
     }
-    return counter%1003;
+    return dp[i][j][isTrue] = counter % 1003;
 }
 
 int numOfWays(string symbols, string operators){
