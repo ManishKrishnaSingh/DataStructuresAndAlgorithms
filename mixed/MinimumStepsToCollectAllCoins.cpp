@@ -2,7 +2,14 @@
 
 using namespace std;
 
-int minStepsUtil(int height[], int left, int right, int h){
+/*******************************************************************************************
+Given many stacks of coins which are arranged adjacently. We need to collect all these coins
+in the minimum number of steps where in one step we can collect one horizontal line of coins
+or vertical line of coins and collected coins should be continuous.
+********************************************************************************************/
+
+int minStepsUtil(int height[], int left, int right, int h)
+{
     if (left >= right){
         return 0;
     }
@@ -21,11 +28,13 @@ int minStepsUtil(int height[], int left, int right, int h){
         height[minHeightIdx]-h);
 }
 
-int findMinimumSteps(int height[], int n){
+int findMinimumSteps(int height[], int n)
+{
     return minStepsUtil(height, 0, n, 0);
 }
 
-int main(){
+int main()
+{
     int height[] = { 2, 1, 2, 5, 1 };
     int n = sizeof(height) / sizeof(int);
 
@@ -35,3 +44,7 @@ int main(){
     return 0;
 }
 
+/************************
+Time Complexity  : O(N^2)
+Space Complexity : O(N)
+*************************/
