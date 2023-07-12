@@ -1,38 +1,61 @@
-#include <iostream>
+#include <bits/stdc++.h>
 
 using namespace std;
 
-int optimalStrategyOfGame(int arr[], int n){
-    int dp[n][n];
-
-    int X, Y, Z;
-    for (int i=0; i<n; i++) {
-        for (int left=0,right=i; right<n; left++,right++) {
-            X=Y=Z=0;
-
-            if((left+2) <= right){
-                X = dp[left+2][right];
-            }
-            if((left+1) <= (right-1)){
-                Y = dp[left+1][right-1];
-            }
-            if(left <= (right-2)){
-                Z = dp[left][right-2];
-            }
-
-            dp[left][right] = max(arr[left]+min(X,Y), arr[right] + min(Y,Z));
-        }
+int rcOptimalStrategy(int arr[], int left, int right)
+{
+    if(left > right)
+    {
+        return 0;
     }
 
-    return dp[0][n-1];
+    int maxLeft  = arr[left]  + min(rcOptimalStrategy(arr, left+2, right), rcOptimalStrategy(arr, left+1, right-1));
+    int maxRight = arr[right] + min(rcOptimalStrategy(arr, left+1, right-1), rcOptimalStrategy(arr, left, right-2));
+
+    return max(maxLeft, maxRight);
 }
 
-int main(){
+int dpOptimalStrategy(int arr[], int left, int right, vector<vector<int>>& dp)
+{
+    if(left > right)
+    {
+        return 0;
+    }
+
+    if (dp[left][right] != -1)
+    {
+        return dp[left][right];
+    }
+
+    int maxLeft  = arr[left]  + min(dpOptimalStrategy(arr, left+2, right, dp), dpOptimalStrategy(arr, left+1, right-1, dp));
+    int maxRight = arr[right] + min(dpOptimalStrategy(arr, left+1, right-1, dp), dpOptimalStrategy(arr, left, right-2, dp));
+
+    return dp[left][right] = max(maxLeft, maxRight);
+}
+
+int dpOptimalStrategy(int arr[], int n)
+{
+    vector<vector<int>> dp(n,vector<int>(n,-1));
+    return dpOptimalStrategy(arr, 0, n-1, dp);
+}
+
+int main()
+{
     int arr[] = { 8, 15, 3, 7 };
     int n = sizeof(arr) / sizeof(arr[0]);
 
-    cout<<"Value [Optimal Strategy] = " <<optimalStrategyOfGame(arr, n);
+    cout<<"Value [Optimal Strategy] = " <<rcOptimalStrategy(arr, 0, n-1)<<endl;
+    cout<<"Value [Optimal Strategy] = " <<dpOptimalStrategy(arr, n)<<endl;
 
     return 0;
 }
 
+/************************
+Recursive Method:
+Time Complexity  : O(2^N)
+Space Complexity : O(N)
+
+Dynamic Programming:
+Time Complexity  : O(N^2)
+Space Complexity : O(N^2)
+*************************/
