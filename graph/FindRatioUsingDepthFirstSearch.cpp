@@ -2,16 +2,13 @@
 
 using namespace std;
 
-
 unordered_map<string, unordered_map<string,double>> mapRatio;
-
 
 typedef struct data
 {
     string x, y;
     double ratio;
 }Data;
-
 
 void storeRatioData(vector<Data>& input)
 {
@@ -31,7 +28,6 @@ void storeRatioData(vector<Data>& input)
         }
     }
 }
-
 
 bool dfs(string a, string b, double& currRatio, unordered_set<string>& visited)
 {
@@ -61,7 +57,6 @@ bool dfs(string a, string b, double& currRatio, unordered_set<string>& visited)
   return false;
 }
 
-
 double findRatio(string a, string b)
 {
   if(mapRatio.count(a) and mapRatio.count(b))
@@ -85,7 +80,6 @@ double findRatio(string a, string b)
   return DBL_MAX;
 }
 
-
 int main()
 {
     vector<Data> input =
@@ -108,3 +102,9 @@ int main()
 }
 
 
+/****************************
+Graph with V Nodes + E Edges
+*****************************
+Time Complexity  : O(V+E))
+Space Complexity : O(V)
+*****************************/
