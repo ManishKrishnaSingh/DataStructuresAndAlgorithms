@@ -40,16 +40,16 @@ void updateMapOfDictionaryData(vector<string>& dictionary, unordered_map<string,
     }
 }
 
-int shortestChainLength(vector<string>& dictionary,string start,string final)
+int shortestChainLength(vector<string>& dictionary,string start,string finish)
 {
-    if(start == final)
+    if(start == finish)
     {
         return 0;
     }
 
-    // add start and final
+    // add start and finish
     dictionary.push_back(start);
-    dictionary.push_back(final);
+    dictionary.push_back(finish);
 
     unordered_map<string,unordered_set<string>> mapData;
     updateMapOfDictionaryData(dictionary, mapData);
@@ -65,7 +65,7 @@ int shortestChainLength(vector<string>& dictionary,string start,string final)
         auto& dist = top.first;
         auto& word = top.second;
 
-        if(word == final)
+        if(word == finish)
         {
             return dist;
         }
