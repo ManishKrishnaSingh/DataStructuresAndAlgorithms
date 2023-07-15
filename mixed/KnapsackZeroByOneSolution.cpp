@@ -40,3 +40,8 @@ int main()
 
     return 0;
 }
+
+/************************
+Time Complexity  : O(N*W)
+Space Complexity : O(W)
+*************************/
