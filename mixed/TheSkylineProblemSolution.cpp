@@ -4,10 +4,13 @@ using namespace std;
 
 typedef pair<int,int> Strip;
 
-vector<Strip> findSkyLine(int buildings[][3], int N){
+vector<Strip> findSkyLine(int buildings[][3], int N)
+{
     vector<Strip> wall;
-    int left, height, right;
-    for(int i=0; i<N; i++){
+
+    int i,left,height,right;
+    for(i = 0; i < N; i++)
+    {
         left   = buildings[i][0];
         right  = buildings[i][1];
         height = buildings[i][2];
@@ -16,21 +19,26 @@ vector<Strip> findSkyLine(int buildings[][3], int N){
         wall.push_back(make_pair(right, height));
     }
 
-    //sort the wall list
+    // sort the wall list
     sort(wall.begin(), wall.end());
 
     vector<Strip> skyLine;
 
     int top = 0;
     multiset<int> leftWallHeight = {0};
-    for(auto w : wall) {
-        if (w.second < 0) {
+    for(auto& w : wall)
+    {
+        if (w.second < 0)
+        {
             leftWallHeight.insert(abs(-w.second));
-        } else {
+        }
+        else
+        {
             leftWallHeight.erase(leftWallHeight.find(w.second));
         }
 
-        if (*leftWallHeight.rbegin() != top) {
+        if (*leftWallHeight.rbegin() != top)
+        {
             top = *leftWallHeight.rbegin();
             skyLine.push_back(make_pair(w.first, top));
         }
@@ -39,8 +47,10 @@ vector<Strip> findSkyLine(int buildings[][3], int N){
     return skyLine;
 }
 
-int main(){
-    int buildings[][3]={
+int main()
+{
+    int buildings[][3]=
+    {
         {1,   5, 11},
         {2,   7,  6},
         {3,   9, 13},
@@ -55,7 +65,8 @@ int main(){
     vector<Strip> skyLine = findSkyLine(buildings, n);
 
     cout<<"SkyLine => ";
-    for(auto strip : skyLine) {
+    for(auto& strip : skyLine)
+    {
         cout<<"{"<<strip.first<<","<<strip.second<<"} ";
     }
 
