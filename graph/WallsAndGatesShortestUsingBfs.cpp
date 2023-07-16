@@ -20,25 +20,30 @@ bool IsSafe(int& x, int& y, int& R, int& C)
 
 void solveWallsAndGates(vector<vector<int>>& rooms)
 {
-    int rows = rooms.size();
-    int cols = rooms[0].size();
+    if(rooms.size() == 0 || rooms[0].size() == 0)
+    {
+        return;
+    }
 
-    bool visit[rows][cols];
+    int R = rooms.size();
+    int C = rooms[0].size();
+
+    bool visit[R][C];
     memset(visit, false, sizeof(visit));
 
-    int r,c, x,y, nx,ny,size;
+    int x, y, nx, ny, size;
 
     queue<pair<int,int>> queue;
 
     // add gates to the queue
-    for(r = 0; r < rows; r++)
+    for(x = 0; x < R; x++)
     {
-        for(c = 0; c < cols; c++)
+        for(y = 0; y < C; y++)
         {
-            if(rooms[r][c] == 0)
+            if(rooms[x][y] == 0)
             {
-                queue.push({r,c});
-                visit[r][c] = true;
+                queue.push({x, y});
+                visit[x][y] = true;
             }
         }
     }
@@ -60,15 +65,15 @@ void solveWallsAndGates(vector<vector<int>>& rooms)
             // update distance
             rooms[x][y] = distance;
 
-            for(auto dir : directions)
+            for(auto& dir : directions)
             {
                 // new coordinates
                 nx = x + dir.first;
                 ny = y + dir.second;
 
-                if(IsSafe(nx,ny,rows,cols) && !visit[nx][ny] && rooms[nx][ny] == INF)
+                if(IsSafe(nx,ny,R,C) && !visit[nx][ny] && rooms[nx][ny] == INF)
                 {
-                    queue.push({nx,ny});
+                    queue.push({nx, ny});
                     visit[nx][ny] = true;
                 }
             }
@@ -77,14 +82,14 @@ void solveWallsAndGates(vector<vector<int>>& rooms)
         distance += 1; // increament the distance
     }
     
-    // print latest status
-    for(r = 0; r < rows; r++)
+    // Print Latest Status
+    for(x = 0; x < R; x++)
     {
-        for(c = 0; c < cols; c++)
+        cout<<endl; // new line
+        for(y = 0; y < C; y++)
         {
-            cout<<rooms[r][c]<<"\t";
+            cout<<rooms[x][y]<<"\t";
         }
-        cout<<endl; //end of line
     }
 }
 
@@ -102,3 +107,8 @@ int main()
 
     return 0;
 }
+
+/************************
+Time Complexity  : O(R*C)
+Space Complexity : O(R*C)
+*************************/
