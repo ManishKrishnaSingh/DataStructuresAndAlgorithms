@@ -32,10 +32,8 @@ public:
 
         discoveryTime[u] = lowestTime[u] = ++time;
 
-        for(auto iter = adj[u].begin(); iter!= adj[u].end(); ++iter)
+        for(auto& v : adj[u])
         {
-            int v = (*iter);
-		
             if(v == parent)
             {
                 continue;
