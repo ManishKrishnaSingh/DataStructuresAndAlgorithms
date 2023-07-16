@@ -29,14 +29,14 @@ public:
     void dfs(int u, vector<bool>& visited, vector<bool>& IsArticulationPoint, vector<int>& lowestTime, vector<int>& discoveryTime, int parent)
     {
         static int time = 0;
-
-        int children = 0; // no of children in dfs tree
  
         visited[u] = true;
  
         discoveryTime[u] = lowestTime[u] = ++time;
  
-        for(auto v : adj[u])
+        int children = 0; // no of children in dfs tree
+
+        for(auto& v : adj[u])
         {
             if(!visited[v])
             {
