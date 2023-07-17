@@ -26,13 +26,13 @@ public:
         adj[v].push_back(u);
     }
 
-    void dfs(int u, vector<bool>& visited, vector<bool>& IsArticulationPoint, vector<int>& lowestTime, vector<int>& discoveryTime, int parent)
+    void dfs(int u, vector<bool>& visited, vector<bool>& IsArticulationPoint, vector<int>& lowValue, vector<int>& discoveryTime, int parent)
     {
         static int time = 0;
  
         visited[u] = true;
  
-        discoveryTime[u] = lowestTime[u] = ++time;
+        discoveryTime[u] = lowValue[u] = ++time;
  
         int children = 0; // no of children in dfs tree
 
@@ -42,18 +42,18 @@ public:
             {
                 children++;
 
-                dfs(v, visited, IsArticulationPoint, lowestTime, discoveryTime, u);
+                dfs(v, visited, IsArticulationPoint, lowValue, discoveryTime, u);
 
-                lowestTime[u] = min(lowestTime[u], lowestTime[v]);
+                lowValue[u] = min(lowValue[u], lowValue[v]);
 
-                if(parent != -1 && lowestTime[v] >= discoveryTime[u])
+                if(parent != -1 && lowValue[v] >= discoveryTime[u])
                 {
                     IsArticulationPoint[u] = true;
                 }
             } 
             else if(v != parent)
             {
-                lowestTime[u] = min(lowestTime[u], discoveryTime[v]);
+                lowValue[u] = min(lowValue[u], discoveryTime[v]);
             }
         }
  
@@ -65,7 +65,7 @@ public:
 
     void findArticulationPoints()
     {
-        vector<int>  lowestTime(V,-1);
+        vector<int>  lowValue(V,-1);
         vector<int>  discoveryTime(V,-1);
 
         vector<bool> visited(V,false);	
@@ -76,7 +76,7 @@ public:
         {
             if(!visited[u])
             {
-				dfs(u, visited, IsArticulationPoint, lowestTime, discoveryTime, parent);
+				dfs(u, visited, IsArticulationPoint, lowValue, discoveryTime, parent);
             }
         }
 
