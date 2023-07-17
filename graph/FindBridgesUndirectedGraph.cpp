@@ -24,13 +24,13 @@ public:
         adj[v].push_back(u);
     }
 
-    void dfs(int u, vector<bool>& visited, vector<int>& lowestTime, vector<int>& discoveryTime, int parent)
+    void dfs(int u, vector<bool>& visited, vector<int>& lowValue, vector<int>& discoveryTime, int parent)
     {
         static int time = 0;
 
         visited[u] = true;
 
-        discoveryTime[u] = lowestTime[u] = ++time;
+        discoveryTime[u] = lowValue[u] = ++time;
 
         for(auto& v : adj[u])
         {
@@ -41,17 +41,17 @@ public:
 
             if(visited[v])
             {
-                lowestTime[u] = min(lowestTime[u], discoveryTime[v]);
+                lowValue[u] = min(lowValue[u], discoveryTime[v]);
             }
             else
             {
                 parent = u;
 
-                dfs(v, visited, lowestTime, discoveryTime, parent);
+                dfs(v, visited, lowValue, discoveryTime, parent);
 
-                lowestTime[u] = min(lowestTime[u], lowestTime[v]);
+                lowValue[u] = min(lowValue[u], lowValue[v]);
 
-                if(lowestTime[v] > discoveryTime[u])
+                if(lowValue[v] > discoveryTime[u])
                 {
                     cout << "{" << u << "," << v << "} ";
                 }
@@ -62,7 +62,7 @@ public:
     void findBridges()
     {
         vector<bool> visited(V,false);	
-        vector<int>  lowestTime(V,-1);
+        vector<int>  lowValue(V,-1);
         vector<int>  discoveryTime(V,-1);
 		
         int v, parent = -1;
@@ -70,7 +70,7 @@ public:
         {
             if(!visited[v])
             {
-                dfs(v, visited, lowestTime, discoveryTime, parent);
+                dfs(v, visited, lowValue, discoveryTime, parent);
             }
         }
     }
