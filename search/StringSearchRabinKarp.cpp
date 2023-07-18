@@ -2,54 +2,70 @@
 
 using namespace std;
 
-#define d 256 //no of chars in input alphabet
+#define ALPHABET 256
 
-const int prime = 101; //prime number
+const int PRIME = 101;
 
-void rabinKarpSearch(string pat, string txt){
-    int m = pat.length();
-    int n = txt.length();
+void rabinKarpSearch(string str, string pat)
+{
+    int M = str.length();
+    int N = pat.length();
 
-    int h=1;
-    for(int i=0; i<m-1; i++){
-        h = (d*h) % prime;
+    int i, j, h = 1;
+    for(i = 0; i < N-1; i++)
+    {
+        h = (ALPHABET * h) % PRIME;
     }
 
-    int hashTxt = 0; //hash for txt
+    int hashTxt = 0; //hash for str
     int hashPat = 0; //hash for pat
-    for(int i=0; i<m; i++){
-        hashPat = (d*hashPat + pat[i]) % prime;
-        hashTxt = (d*hashTxt + txt[i]) % prime;
+    for(i = 0; i < N; i++)
+    {
+        hashTxt = (ALPHABET * hashTxt + str[i]) % PRIME;
+        hashPat = (ALPHABET * hashPat + pat[i]) % PRIME;
     }
 
-    for(int i=0; i<=n-m; i++){
-        if(hashTxt==hashPat){
-            int j;
-            for(j=0; j<m; j++){
-                if (txt[i+j] != pat[j]){
+    for(i = 0; i <= M-N; i++)
+    {
+        if(hashTxt == hashPat)
+        {
+            for(j = 0; j < N; j++)
+            {
+                if (str[i+j] != pat[j])
+                {
                     break;
                 }
             }
-            if(j==m){
-                cout<<"Found at index "<<i<<endl;
+
+            if(j == N)
+            {
+                cout<<"Found at index "<<i<<"\n";
             }
         }
 
-        if(i < n-m){
-            hashTxt = (d*(hashTxt-txt[i]*h) + txt[i+m])%prime;
-            if(hashTxt < 0){
-                hashTxt = (hashTxt + prime);
+        if(i < M-N)
+        {
+            hashTxt = (ALPHABET * (hashTxt-str[i]*h) + str[i+N]) % PRIME;
+
+            if(hashTxt < 0)
+			{
+                hashTxt = (hashTxt + PRIME);
             }
         }
     }
 }
 
-int main(){
-    string txt = "ABACADAAADGACADAGJKACA";
+int main()
+{
+    string str = "ABACADAAADGACADAGJKACA";
     string pat = "ACADA";
 
-    rabinKarpSearch(pat, txt);
+    rabinKarpSearch(str, pat);
 
     return 0;
 }
 
+/************************
+Time Complexity  : O(M*N)
+Space Complexity : O(1)
+*************************/
