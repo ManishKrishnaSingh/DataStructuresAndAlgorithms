@@ -20,7 +20,7 @@ void LpsCompute(string& pat, vector<int>& LPS)
         {
             if (length == 0)
             {
-				LPS[index++] = 0;
+                LPS[index++] = 0;
             }
             else
             {
@@ -48,18 +48,18 @@ void kmpSearch(string& str, string& pat)
 
         if(j == N)
         {
-			cout<<"Found at index "<<(i-j)<<"\n";
-			j = LPS[j-1];
+            cout<<"Found at index "<<(i-j)<<"\n";
+            j = LPS[j-1];
         }
         else if (i < M && str[i] != pat[j])
         {
             if (j != 0)
             {
-				j = LPS[j-1];
+                j = LPS[j-1];
             }
             else
             {
-				i++;
+                i++;
             }
         }
     }

@@ -48,7 +48,7 @@ void rabinKarpSearch(string& str, string& pat)
             hashTxt = (ALPHABET * (hashTxt-str[i]*h) + str[i+N]) % PRIME;
 
             if(hashTxt < 0)
-			{
+            {
                 hashTxt = (hashTxt + PRIME);
             }
         }
