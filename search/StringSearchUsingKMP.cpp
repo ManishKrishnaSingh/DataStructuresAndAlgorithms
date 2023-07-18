@@ -1,57 +1,81 @@
-#include <iostream>
+#include <bits/stdc++.h>
 
 using namespace std;
 
-//Longest Prefix Suffix
-void lpsCompute(string iPattern, int n, int LPS[]){
+// Longest Prefix Suffix
+void LpsCompute(string& pat, vector<int>& LPS)
+{
+    int index  = 1;
+    int length = 0;
+    int n = LPS.size();
+
     LPS[0] = 0;
-
-    int i=1, len=0;
-    while (i < n) {
-        if (iPattern[i]==iPattern[len]) {
-			LPS[i++] = ++len;
-		} else {
-			if (len!=0) {
-				len = LPS[len-1];
-			} else {
-				LPS[i++] = 0;
-			}
-		}
-	}
-}
-
-void kmpSearch(string iStr, string iPattern){
-    int sLength = iStr.length();
-    int pLength = iPattern.length();
-
-    int LPS[pLength];
-    lpsCompute(iPattern, pLength, LPS);
-
-    int i=0, j=0;
-    while (i<sLength) {
-		if (iStr[i]==iPattern[j]) {
-			i++; j++;
-		}
-
-		if (j==pLength) {
-			cout<<"Found at index "<<(i-j)<<endl;
-			j = LPS[j-1];
-		} else if (i<sLength && iStr[i]!=iPattern[j]) {
-			if (j!=0){
-				j = LPS[j-1];
-			} else {
-				i = i+1;
-			}
-		}
+    while(index < n)
+    {
+        if (pat[index] == pat[length])
+        {
+            LPS[index++] = ++length;
+        }
+        else
+        {
+            if (length == 0)
+            {
+				LPS[index++] = 0;
+            }
+            else
+            {
+                length = LPS[length-1];
+            }
+        }
     }
 }
 
-int main(){
-    string txt = "ABABDABACDABABCABAB";
+void kmpSearch(string& str, string& pat)
+{
+    int M = str.length();
+    int N = pat.length();
+
+    vector<int> LPS(N);
+    LpsCompute(pat, LPS);
+
+    int i=0, j=0;
+    while(i < M)
+    {
+        if(str[i] == pat[j])
+        {
+            i++; j++;
+        }
+
+        if(j == N)
+        {
+			cout<<"Found at index "<<(i-j)<<"\n";
+			j = LPS[j-1];
+        }
+        else if (i < M && str[i] != pat[j])
+        {
+            if (j != 0)
+            {
+				j = LPS[j-1];
+            }
+            else
+            {
+				i++;
+            }
+        }
+    }
+}
+
+int main()
+{
+    string str = "ABABDABACDABABCABAB";
     string pat = "ABABCABAB";
 
-    kmpSearch(txt, pat);
+    kmpSearch(str, pat);
 
     return 0;
 }
 
+/************************
+Time Complexity  : O(M*N)
+Space Complexity : O(N)
+*************************/

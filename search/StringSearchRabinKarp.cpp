@@ -1,4 +1,4 @@
-#include <iostream>
+#include <bits/stdc++.h>
 
 using namespace std;
 
@@ -6,7 +6,7 @@ using namespace std;
 
 const int PRIME = 101;
 
-void rabinKarpSearch(string str, string pat)
+void rabinKarpSearch(string& str, string& pat)
 {
     int M = str.length();
     int N = pat.length();
