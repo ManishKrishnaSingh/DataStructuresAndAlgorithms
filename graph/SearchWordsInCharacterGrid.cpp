@@ -16,8 +16,10 @@ bool IsSafe(int& x, int& y, int& ROW, int& COL)
     return false;
 }
 
-bool dfs(vector<vector<char>>&board, int& i, int& j, int& ROW, int& COL, string& word, int index)
+bool dfs(vector<vector<char>>&board, int& i, int& j, int& ROW, int& COL, vector<vector<bool>>& visited, string& word, int index)
 {
+    visited[i][j] = true;
+
     if(index == word.size())
     {
         return true;
@@ -28,9 +30,9 @@ bool dfs(vector<vector<char>>&board, int& i, int& j, int& ROW, int& COL, string&
     {
         x = i + direction.first;
         y = j + direction.second;
-        if(IsSafe(x,y,ROW,COL) and index < word.size() and board[x][y] == word[index])
+        if(IsSafe(x,y,ROW,COL) and !visited[x][y] and index < word.size() and board[x][y] == word[index])
         {
-            return dfs(board, x, y, ROW, COL, word, index+1);
+            return dfs(board, x, y, ROW, COL, visited, word, index+1);
         }
     }
 
@@ -47,18 +49,23 @@ void searchWordsInCharacterGrid(vector<vector<char>>& board, vector<string>& wor
     int ROW = board.size();
     int COL = board[0].size();
 
+    vector<vector<bool>> visited(ROW,vector<bool>(COL, false));
+
     int i, j;
     for(auto& word : words)
     {
-        for(i=0; i<ROW; i++)
+        visited.assign(ROW,vector<bool>(COL, false));
+
+        for(i = 0; i < ROW; i++)
         {
-            for(j=0; j<ROW; j++)
+            for(j = 0; j < COL; j++)
             {
-                if(word[0] == board[i][j])
+                if(word[0] == board[i][j] and !visited[i][j])
                 {
-                    if(dfs(board, i, j, ROW, COL, word, 1))
+                    if(dfs(board, i, j, ROW, COL, visited, word, 1))
                     {
                         cout<<word<<" found at "<<i<<","<<j<<endl;
+                        visited.assign(ROW,vector<bool>(COL, false));
                     }
                 }
             }
@@ -85,4 +92,3 @@ int main()
 
     return 0;
 }
-
