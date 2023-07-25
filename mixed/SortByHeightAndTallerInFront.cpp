@@ -19,46 +19,32 @@ struct Person
 {
     string name;
     int height;
-    int inFront;
+    int TallerInFront;
 };
 
-class Comparator
+struct Comparator
 {
-public:
-    bool operator()(const Person& x, const Person& y)
+    bool operator()(Person& x, Person& y)
     {
-        if(x.inFront != y.inFront)
+        if(x.height != y.height)
         {
-            return x.inFront < y.inFront;
+            return x.height > y.height;
         }
-        return x.height > y.height;
+        return x.TallerInFront < y.TallerInFront;
     }
 };
 
-list<Person> retrieveQueue(vector<Person>& persons)
+vector<Person> buildQueue(vector<Person>& persons)
 {
     sort(persons.begin(), persons.end(), Comparator());
 
-    list<Person> pQueue;
+    vector<Person> vOrder;
     for(auto& person : persons)
     {
-        auto iter = pQueue.begin();
-        int inFront = person.inFront;
-
-        while(inFront)
-        {
-            if((*iter).height > person.height)
-            {
-                inFront--;
-            }
-
-            iter++;
-        }
-
-        pQueue.insert(iter, person);
+        vOrder.insert(vOrder.begin()+person.TallerInFront, person);
     }
 
-    return pQueue;
+    return vOrder;
 }
 
 int main()
@@ -73,12 +59,15 @@ int main()
         {"F", 4,  0}
     };
 
-    list<Person> sortedPersons = retrieveQueue(persons);
-
-    for(auto& person : sortedPersons)
+    for(auto& person : buildQueue(persons))
     {
-        cout<<"{"<<person.name<<",\t"<<person.height<<",\t"<<person.inFront<<"}\n";
+        cout<<"{"<<person.name<<",\t"<<person.height<<",\t"<<person.TallerInFront<<"}\n";
     }
 
     return 0;
 }
+
+/************************
+Time Complexity  : O(N^2)
+Space Complexity : O(N)
+*************************/
