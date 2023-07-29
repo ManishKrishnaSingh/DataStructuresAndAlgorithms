@@ -66,7 +66,7 @@ int main()
 	graph.addEdge(0, 2);
 	graph.addEdge(1, 2);
 
-	cout<<"Graph has Cycle = "<<boolalpha<<graph.hasCycle();
+	cout<<"Graph has Cycle ? "<<boolalpha<<graph.hasCycle();
 
 	return 0;
 }
