@@ -1,6 +1,4 @@
-#include <list>
-#include <cstring>
-#include <iostream>
+#include <bits/stdc++.h>
 
 using namespace std;
 
@@ -22,7 +20,7 @@ public:
 		listOfEdge.push_back({src, dst});
 	}
 
-	int find(int parent[], int index)
+	int find(vector<int>& parent, int index)
 	{
 	    if(parent[index] == -1)
 	    {
@@ -31,21 +29,18 @@ public:
 	    return find(parent, parent[index]);
 	}
 
-	void Union(int parent[], int u, int v)
+	void Union(vector<int>& parent, int u, int v)
 	{
 	    parent[u] = v;
 	}
 
 	bool hasCycle()
 	{
-	    int parent[this->V];
-	    memset(parent, -1, sizeof(parent));
-
-	    list<Edge>::iterator it;
-	    for(it=listOfEdge.begin(); it!=listOfEdge.end(); it++)
+	    vector<int> parent(V, -1);
+	    for(auto& edge : listOfEdge)
 	    {
-	        int x = find(parent, it->first);
-	        int y = find(parent, it->second);
+	        int x = find(parent, edge.first);
+	        int y = find(parent, edge.second);
 
 	        if(x == y)
 	        {
@@ -70,3 +65,8 @@ int main()
 
 	return 0;
 }
+
+/************************
+Time Complexity  : O(V+E)
+Space Complexity : O(V)
+*************************/
