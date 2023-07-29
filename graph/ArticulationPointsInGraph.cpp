@@ -76,7 +76,7 @@ public:
         {
             if(!visited[u])
             {
-				dfs(u, visited, IsArticulationPoint, lowValue, discoveryTime, parent);
+                dfs(u, visited, IsArticulationPoint, lowValue, discoveryTime, parent);
             }
         }
 
