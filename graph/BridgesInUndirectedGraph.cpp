@@ -39,15 +39,9 @@ public:
                 continue;
             }
 
-            if(visited[v])
+            if(!visited[v])
             {
-                lowValue[u] = min(lowValue[u], discoveryTime[v]);
-            }
-            else
-            {
-                parent = u;
-
-                dfs(v, visited, lowValue, discoveryTime, parent);
+                dfs(v, visited, lowValue, discoveryTime, u);
 
                 lowValue[u] = min(lowValue[u], lowValue[v]);
 
@@ -55,6 +49,10 @@ public:
                 {
                     cout << "{" << u << "," << v << "} ";
                 }
+            }
+            else
+            {
+                lowValue[u] = min(lowValue[u], discoveryTime[v]);
             }
         }
     }
@@ -65,12 +63,12 @@ public:
         vector<int>  lowValue(V,-1);
         vector<int>  discoveryTime(V,-1);
 		
-        int v, parent = -1;
-        for(v = 0; v < V; v++)
+        int u, parent = -1;
+        for(u = 0; u < V; u++)
         {
-            if(!visited[v])
+            if(!visited[u])
             {
-                dfs(v, visited, lowValue, discoveryTime, parent);
+                dfs(u, visited, lowValue, discoveryTime, parent);
             }
         }
     }
