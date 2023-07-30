@@ -24,13 +24,12 @@ public:
         adj[u].push_back(v);
     }
 
-    void dfs(int u, vector<int>& lowValue, vector<int>& discoveryTime, stack<int>& stk, vector<bool>& IsStackMember)
+    void dfs(int u, vector<int>& lowValue, vector<int>& discoveryTime, stack<int>& stk, vector<bool>& InStack)
     {
         static int time = 0;
 
         stk.push(u);
-
-        IsStackMember[u] = true;
+        InStack[u] = true;
 
         discoveryTime[u] = lowValue[u] = ++time;
 
@@ -38,11 +37,11 @@ public:
         {
             if(discoveryTime[v] == -1)
             {
-                dfs(v, lowValue, discoveryTime, stk, IsStackMember);
+                dfs(v, lowValue, discoveryTime, stk, InStack);
 
                 lowValue[u] = min(lowValue[u], lowValue[v]);
             }
-            else if(IsStackMember[v] == true)
+            else if(InStack[v])
             {
                 lowValue[u] = min(lowValue[u], discoveryTime[v]);
             }
@@ -54,31 +53,32 @@ public:
             int top;
             while(stk.top() != u)
             {
-                top=stk.top();stk.pop();
-                cout<<top<<" "; // print
-                IsStackMember[top]=false;
+                top=stk.top();
+                stk.pop();
+                cout << top << " ";
+                InStack[top]=false;
             }
 
-            top=stk.top();stk.pop();
-            cout<<top<<"\n"; // print
-            IsStackMember[top]=false;
+            top=stk.top();
+            stk.pop();
+            cout << top <<"\n";
+            InStack[top]=false;
         }
     }
 
     void PrintTarjansSCCs()
     {
-        stack<int>   stk;
-
         vector<int>  lowValue(V,-1);
         vector<int>  discoveryTime(V,-1);
 
-        vector<bool> IsStackMember(V,false);
+        stack<int>   stk;
+        vector<bool> InStack(V,false);
 
-        for (int u = 0; u < V; u++)
+        for(int u = 0; u < V; u++)
         {
-            if (discoveryTime[u] == -1)
+            if(discoveryTime[u] == -1)
             {
-                dfs(u, lowValue, discoveryTime, stk, IsStackMember);
+                dfs(u, lowValue, discoveryTime, stk, InStack);
             }
         }
     }
