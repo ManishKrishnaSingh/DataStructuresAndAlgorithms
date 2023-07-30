@@ -26,7 +26,7 @@ public:
         adj[v].push_back(u);
     }
 
-    void dfs(int u, vector<bool>& visited, vector<bool>& IsArticulationPoint, vector<int>& lowValue, vector<int>& discoveryTime, int parent)
+    void dfs(int u, vector<bool>& visited, vector<int>& lowValue, vector<int>& discoveryTime, int parent, vector<bool>& IsArticulationPoint)
     {
         static int time = 0;
  
@@ -47,7 +47,7 @@ public:
             {
                 children++;
 
-                dfs(v, visited, IsArticulationPoint, lowValue, discoveryTime, u);
+                dfs(v, visited, lowValue, discoveryTime, u, IsArticulationPoint);
 
                 lowValue[u] = min(lowValue[u], lowValue[v]);
 
@@ -81,7 +81,7 @@ public:
         {
             if(!visited[u])
             {
-                dfs(u, visited, IsArticulationPoint, lowValue, discoveryTime, parent);
+                dfs(u, visited, lowValue, discoveryTime, parent, IsArticulationPoint);
             }
         }
 
