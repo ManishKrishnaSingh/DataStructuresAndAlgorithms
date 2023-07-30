@@ -38,6 +38,11 @@ public:
 
         for(auto& v : adj[u])
         {
+            if(v == parent)
+            {
+                continue;
+            }
+
             if(!visited[v])
             {
                 children++;
@@ -51,7 +56,7 @@ public:
                     IsArticulationPoint[u] = true;
                 }
             } 
-            else if(v != parent)
+            else
             {
                 lowValue[u] = min(lowValue[u], discoveryTime[v]);
             }
