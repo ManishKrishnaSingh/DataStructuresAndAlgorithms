@@ -18,7 +18,7 @@ int getLeastKey(vector<int>& keySet, vector<bool>& mstSet)
     return minIndex;
 }
 
-void PrintPrimsMST(int parent[], int graph[V][V])
+void PrintPrimsMST(vector<int>& parent, int graph[V][V])
 {
     cout<<"Edge\tWeight"<<endl;
     for (int i = 1; i < V; i++)
