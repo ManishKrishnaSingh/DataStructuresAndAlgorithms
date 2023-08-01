@@ -1,62 +1,74 @@
-#include <list>
-#include <queue>
-#include <climits>
-#include <iostream>
+#include <bits/stdc++.h>
 
 using namespace std;
 
-typedef pair<int,int> Node;
-
-class Graph{
+class Graph
+{
     int V;
     list<pair<int,int>> *adj;
-  public:
-    Graph(int V){
-        this->V = V;
-        this->adj = new list<pair<int,int>>[V];
+
+public:
+    Graph(int iV):V(iV)
+    {
+        adj = new list<pair<int,int>>[V];
     }
 
-    ~Graph(){
+    ~Graph()
+    {
         delete[] adj;
     }
 
-    void addEdge(int u, int v, int w){
+    void addEdge(int u, int v, int w)
+    {
         adj[u].push_back(make_pair(v,w));
         adj[v].push_back(make_pair(u,w));
     }
 
-    void findShortestPath(int start){
-        int distance[this->V];
-        for(int i=0; i<this->V; i++){
-            distance[i] = INT_MAX;
-        }
+    void findShortestPath(int start)
+    {
+        vector<bool> visited(V, false);
+        vector<int>  distance(V, INT_MAX);
+        priority_queue<pair<int,int>, vector<pair<int,int>>, greater<pair<int,int>>> pq;
 
-        priority_queue<Node, vector<Node>, greater<Node>> pQueue;
+        distance[start]=0;
+        pq.push({0, start});
 
-        distance[start] = 0;
-        pQueue.push(make_pair(0, start));
+        while(!pq.empty())
+        {
+            int u = pq.top().second; pq.pop();
 
-        while(!pQueue.empty()){
-            int u = pQueue.top().second;
-            pQueue.pop();
+            if(visited[u])
+            {
+                continue;
+            }
 
-            for(auto iter=adj[u].begin(); iter!=adj[u].end(); iter++){
-                int v = iter->first;
-                int w = iter->second;
-                if(distance[v] > distance[u]+w){
-                    distance[v] = distance[u]+w;
-                    pQueue.push(make_pair(distance[v], v));
+            visited[u] = true;
+
+            if(distance[u] != INT_MAX)
+            {
+                for(auto& pEntry : adj[u])
+                {
+                    int& v = pEntry.first;
+                    int& w = pEntry.second;
+
+                    if(!visited[v] and distance[v] > distance[u]+w)
+                    {
+                        distance[v]=distance[u]+w;
+                        pq.push({distance[v], v});
+                    }
                 }
             }
         }
 
-        for(int i=0; i<this->V; i++){
+        for(int i=0; i<this->V; i++)
+        {
             cout<<"Shortest Path ["<<start<<","<<i<<"] = "<<distance[i]<<endl;
         }
     }
 };
 
-int main(){
+int main()
+{
     Graph graph(9);
 
     graph.addEdge(0, 1, 4);
