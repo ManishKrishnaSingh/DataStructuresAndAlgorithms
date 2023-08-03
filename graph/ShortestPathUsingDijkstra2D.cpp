@@ -16,7 +16,7 @@ int minIndexByDistance(vector<int>& distance, vector<bool>& visited, int V)
     return minIndex;
 }
 
-void dijkstraShortestPath(vector<vector<int>>& graph, int start)
+void DijkstraShortestPath(vector<vector<int>>& graph, int start)
 {
     if(graph.size()==0 || graph[0].size()==0)
     {
@@ -29,7 +29,7 @@ void dijkstraShortestPath(vector<vector<int>>& graph, int start)
     vector<int> distance(V,INT_MAX);
 
     distance[start] = 0;
-    for(int count=0; count < V-1; count++)
+    for(int counter=0; counter < V; counter++)
     {
         int u = minIndexByDistance(distance, visited, V);
 
@@ -68,7 +68,7 @@ int main()
         { 0, 0,  2,  0,  0,  0, 6,  7, 0 }
     };
 
-    dijkstraShortestPath(graph, 0);
+    DijkstraShortestPath(graph, 0);
 
     return 0;
 }
