@@ -2,61 +2,65 @@
 
 using namespace std;
 
-#define V 5
-
-int getLeastKey(vector<int>& keySet, vector<bool>& mstSet)
+int minIndexByDistance(vector<int>& weight, vector<bool>& visited, int V)
 {
-    int minIndex, minKey = INT_MAX;
-    for (int index=0; index<V; index++)
+    int minIndex, minValue=INT_MAX;
+    for(int v = 0; v < V; v++)
     {
-        if (mstSet[index] == false && minKey > keySet[index])
+        if(!visited[v] and minValue >= weight[v])
         {
-            minIndex = index;
-            minKey = keySet[index];
+            minIndex = v;
+            minValue = weight[v];
         }
     }
     return minIndex;
 }
 
-void PrintPrimsMST(vector<int>& parent, int graph[V][V])
+void PrimsMinimumSpanningTree(vector<vector<int>>& graph)
 {
-    cout<<"Edge\tWeight"<<endl;
-    for (int i = 1; i < V; i++)
+    if(graph.size()==0 || graph[0].size()==0)
     {
-        cout<<parent[i]<<" - "<<i<<"\t"<<graph[i][parent[i]]<<endl;
+        return;
     }
-}
 
-void PrintPrimsMST(int graph[V][V])
-{
-    vector<int>  parent(V);
-    vector<int>  keySet(V, INT_MAX);
-    vector<bool> mstSet(V, false);
+    int V = graph.size();
 
-    parent[0] = -1;
-    keySet[0] =  0; // start with vertex "0"
+    vector<int> parent(V, -1);
+    vector<int> weight(V, INT_MAX);
 
-    for(int count=0; count < V-1; count++)
+    vector<bool> visited(V, false);
+
+    weight[0] = 0; // start with vertex "0"
+    for(int counter=0; counter < V; counter++)
     {
-        int u = getLeastKey(keySet, mstSet);
+        int u = minIndexByDistance(weight, visited, V);
 
-        mstSet[u] = true;
+        visited[u] = true;
+
         for (int v=0; v < V; v++)
         {
-            if (graph[u][v] && !mstSet[v] && graph[u][v] < keySet[v])
+            if(!visited[v] and graph[u][v] and weight[v] > graph[u][v])
             {
                 parent[v] = u;
-                keySet[v] = graph[u][v];
+                weight[v] = graph[u][v];
             }
         }
     }
 
-    PrintPrimsMST(parent, graph);
+    // Print Prims MST
+    cout<<"Edge\tWeight"<<endl;
+    for(int v = 0; v < V; v++)
+    {
+        if(parent[v] != -1)
+        {
+            cout<<parent[v]<<"-"<<v<<"\t"<<graph[parent[v]][v]<<"\n";
+        }
+    }
 }
 
 int main()
 {
-    int graph[V][V] =
+    vector<vector<int>> graph =
     {
         { 0,  3,  2,  0, 0 },
         { 3,  0, 16, 12, 0 },
@@ -65,7 +69,12 @@ int main()
         { 0,  0,  5,  0, 0 }
     };
 
-    PrintPrimsMST(graph);
+    PrimsMinimumSpanningTree(graph);
 
     return 0;
 }
+
+/************************
+Time Complexity  : O(V*V)
+Space Complexity : O(V)
+*************************/
