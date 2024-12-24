@@ -8,8 +8,8 @@ int kthElement(int arr1[], int arr2[], int X, int Y, int K){
 		return kthElement(arr2, arr1, Y, X, K);
 	}
 
-	int low  = max(0, K-Y);
-	int high = min(K, X);
+	int low  = max(0, K-Y); // Asuming, we need to take a minimum from array 1 # Lets say K is bigger than Y
+	int high = min(K, X);   // Asuming, we cant take all elements from array 1 # Lets say K is bigger than X
 
 	while(low <= high){
 		int partitionX = (low+high) >> 1;
