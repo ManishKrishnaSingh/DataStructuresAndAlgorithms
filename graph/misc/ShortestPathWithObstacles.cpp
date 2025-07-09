@@ -31,61 +31,57 @@ int shortestPathWithObstacles(vector<vector<int>>& grid, int& K)
     int M = grid.size();
     int N = grid[0].size();
 
-    if (M == 1 && N == 1 && (grid[0][0] == 0 || K >= 1))
-    {
-        return 0;
-    }
+    int distance[M][N][K+1];
+    memset(distance, 0, sizeof distance);
 
     bool visited[M][N][K+1];
     memset(visited, false, sizeof visited);
 
     queue<vector<int>> queue;
 
-    int size, steps=0;
-    queue.push({0, 0, K});
+    // BFS/floodfill
+    queue.push({0, 0, 0});
+    visited[0][0][0] = true;
 
     while (!queue.empty())
     {
-        steps++;
-        size = queue.size();
+        auto curr = queue.front();
+        queue.pop();
 
-        while (size--)
+        int& x = curr[0];
+        int& y = curr[1];
+        int& k = curr[2];
+
+        // Reached the Target Cell
+        if (x == M-1 and y == N-1)
         {
-            auto curr = queue.front();
-            queue.pop();
+            return distance[x][y][k];
+        }
 
-            int& x = curr[0];
-            int& y = curr[1];
-            int& k = curr[2];
+        for (auto& dir : dirs)
+        {
+            int nx = x + dir.first;
+            int ny = y + dir.second;
+            int nk = k;
 
-            visited[x][y][k] = true;
-
-            for (auto& dir : dirs)
+            if (!IsSafe(nx, ny, M, N))
             {
-                int nx = x + dir.first;
-                int ny = y + dir.second;
-                if (IsSafe(nx, ny, M, N))
-                {
-                    // Reached the Target Cell
-                    if (nx == M-1 && ny == N-1)
-                    {
-                        return steps;
-                    }
-
-                    // Empty Cell: Include if not visited
-                    if (grid[nx][ny] == 0 && !visited[nx][ny][k])
-                    {
-                        queue.push({nx, ny, k});
-                        visited[nx][ny][k] = true;
-                    }
-                    // Eliminate the Obstacle | Break the Wall if k >= 1
-                    else if (grid[nx][ny] == 1 && k >= 1 && !visited[nx][ny][k-1])
-                    {
-                        queue.push({ nx, ny, k-1});
-                        visited[nx][ny][k-1] = true;
-                    }
-                }
+                continue;
             }
+			
+            if(grid[nx][ny] == 1)
+            {
+                nk++;
+            }
+
+            if(nk > K || visited[nx][ny][nk])
+            {
+                continue;
+            }
+
+            queue.push({nx, ny, nk});
+            visited[nx][ny][ny] = true;
+            distance[nx][ny][nk] = distance[x][y][k] + 1;
         }
     }
 
@@ -98,8 +94,10 @@ int main()
     vector<vector<int>> grid =
     {
         { 0, 0, 0 },
-        { 0, 0, 1 },
-        { 0, 1, 0 }
+        { 1, 1, 0 },
+        { 0, 0, 0 },
+        { 0, 1, 1 },
+        { 0, 0, 0 }
     };
 
     cout<<"Shortest Path = "<<shortestPathWithObstacles(grid, K);
